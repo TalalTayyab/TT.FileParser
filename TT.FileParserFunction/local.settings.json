@@ -1,0 +1,17 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "ServiceBusConnection": "",
+    "ServiceBusQueue": "fileshare",
+    "MatchPattern": "a*d",
+    "FileMonitorTrigger": "*/5 * * * * *",
+    "StorageOptions:ConnectionString": "",
+    "StorageOptions:ShareName": "fileshare",
+    "StorageOptions:IncomingDirectory": "incoming",
+    "StorageOptions:ProcessingDirectory": "processing",
+    "StorageOptions:CompletedDirectory": "completed",
+    "StorageOptions:WaitSecondsUntilLastModified": "10"
+  }
+}
