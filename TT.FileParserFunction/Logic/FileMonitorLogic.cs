@@ -29,7 +29,7 @@ namespace TT.FileParserFunction
             {
                 _log.LogInformation($"Found file {file.FileName}");
 
-                if (!await file.IsFileReady())
+                if (!await file.IsReady())
                 {
                     continue;
                 }
@@ -54,7 +54,7 @@ namespace TT.FileParserFunction
                 }
                 else
                 {
-                    await file.DeleteFile();
+                    await file.Delete();
                 }
             }
         }

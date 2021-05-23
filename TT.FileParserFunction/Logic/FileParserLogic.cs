@@ -26,7 +26,13 @@ namespace TT.FileParserFunction
 
             var file = _storageFacade.GetDirectory(fileInfo.DirectoryName).GetFile(fileInfo.FileName);
 
-            await foreach (var line in file.GetFileLines())
+            if (!await file.Exists())
+            {
+                _log.LogWarning($"File {fileInfo.FileName} could not be found for parsing.");
+                return;
+            }
+
+            await foreach (var line in file.GetLines())
             {
                 _log.LogTrace(line);
 
@@ -38,7 +44,7 @@ namespace TT.FileParserFunction
                 }
             }
 
-            await file.DeleteFile();
+            await file.Delete();
         }
     }
 }

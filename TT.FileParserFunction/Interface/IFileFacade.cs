@@ -9,9 +9,11 @@ namespace TT.FileParserFunction
         string FileName { get; }
 
         Task<bool> ChangeDirectory(string destinationDirectory);
-        Task<bool> DeleteFile();
-        IAsyncEnumerable<string> GetFileLines();
+        Task<bool> Delete();
+        IAsyncEnumerable<string> GetLines();
 
-        Task<bool> IsFileReady();
+        Task<bool> IsReady();
+
+        Task<bool> Exists();
     }
 }
