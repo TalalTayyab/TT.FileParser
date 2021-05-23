@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using TT.FileParserFunction;
 
-namespace FileLogicTest
+namespace FileLogicTest.Unit
 {
     public class ParseLineUnitTests
     {
