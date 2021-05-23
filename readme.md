@@ -88,6 +88,8 @@ On a high level there are two Azure functions. The first monitors for incoming f
 
 1. FileMonitorFunction :- This runs on a timer and monitors the Azure file share. Internally it just calls FileMonitorLogic. If any file is found, it will be moved to the processing directory and a message posted in Service bus Queue. Control the timer via the setting `FileMonitorTrigger` and the time to wait until file was last modified `StorageOptions:WaitSecondsUntilLastModified`.
 
+The reason for using a timer/poll functionality is because Azure file share does not support notification when a file is uploaded.
+
 1. FileParserFunction :- This function is triggered when a message arrives in the service bus queue. Internally it calls FileParserLogic. The design allow for multiple processing of files as they are moved into the queue. Each file is read line by line via buffered stream. If a match is found, it is moved to the completed directory, otherwise deleted. The setting `MatchPattern` can be updated for specifying the match pattern and `ServiceBusQueue` for specifying the queue to monitor for file messages.
 
 ### Logic classes
