@@ -84,6 +84,12 @@ This is a cloud native design using Azure functions, Storage and Service bus/Que
 
 On a high level there are two Azure functions. The first monitors for incoming files and posts a message in the Service bus  queue, the second is triggered when a message arrives in the queue. The design allows for scaling of the message processing depending on the Azure Web App consumption plan.
 
+Other approaches considered but not selected.
+
+1. Use database (like Cosmos) for maintaining a state of the files. However given the simplicity of the requirement, it seemed like an overkill.
+1. Use Azure Storage - the trigger functionality within Azure functions was the deciding factor.
+1. Azure Event Hub - due to lack of notification from Azure file share, there was no advantage in choosing event hub over service bus.
+
 ### Azure functions
 
 1. FileMonitorFunction :- This runs on a timer and monitors the Azure file share. Internally it just calls FileMonitorLogic. If any file is found, it will be moved to the processing directory and a message posted in Service bus Queue. Control the timer via the setting `FileMonitorTrigger` and the time to wait until file was last modified `StorageOptions:WaitSecondsUntilLastModified`.
@@ -111,5 +117,6 @@ The reason for using a timer/poll functionality is because Azure file share does
 1. File with the same name will be overwritten if it exists in the completed directory
 1. If a file with the same name is being processed and is also uploaded , it will be ignored until the processed file is completed.
 1. Error handling is rudimentary - the file will stay in the directory and an error will be logged. 
-1. Service bus messages will be retried depending on the policy and moved to dead letter queue.
+1. In case of exception during processing service bus messages will be retried (depending on the policy) and moved to dead letter queue after max attempts.
+1. If a file is not found during processing, a warning will be logged (this is to handle idempotent processing)
 1. Ideally deployment should be via CD but powershell was easier given the time limit.
