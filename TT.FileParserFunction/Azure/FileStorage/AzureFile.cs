@@ -51,7 +51,7 @@ namespace TT.FileParserFunction
             return response.Value.CopyStatus == CopyStatus.Success;
         }
 
-        public async Task<bool> DeleteFile()
+        public async Task<bool> Delete()
         {
             if (!await FileClient.ExistsAsync())
             {
@@ -63,20 +63,8 @@ namespace TT.FileParserFunction
             return true;
         }
 
-        public async IAsyncEnumerable<string> GetFileLines()
+        public async IAsyncEnumerable<string> GetLines()
         {
-            //using (var stream = await FileClient.OpenReadAsync())
-            //{
-            //    using (var sr = new StreamReader(stream))
-            //    {
-            //        var line = string.Empty;
-            //        while ((line = sr.ReadLine()) != null)
-            //        {
-            //            yield return line;
-            //        }
-            //    }
-            //}
-
             using (var stream = await FileClient.OpenReadAsync())
             using (BufferedStream bs = new BufferedStream(stream))
             using (StreamReader sr = new StreamReader(bs))
@@ -89,12 +77,17 @@ namespace TT.FileParserFunction
             }
         }
 
-        public async Task<bool> IsFileReady()
+        public async Task<bool> IsReady()
         {
             var properties = await FileClient.GetPropertiesAsync();
             var diff = DateTime.UtcNow - properties.Value.LastModified.UtcDateTime;
             if (diff.TotalSeconds < _waitSecondsUntilLastModified) return false;
             return true;
+        }
+
+        public async Task<bool> Exists()
+        {
+            return await FileClient.ExistsAsync();
         }
     }
 }

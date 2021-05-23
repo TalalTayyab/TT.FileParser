@@ -42,7 +42,7 @@ namespace TT.FileParserFunction
 
             var file = GetFile(fileName);
 
-            return await file.DeleteFile();
+            return await file.Delete();
         }
 
         public async Task CreateIfNotExists()
